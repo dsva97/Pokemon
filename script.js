@@ -26,7 +26,7 @@ const printPokemon = ({ name, img }) => {
         content.innerHTML += /*html*/`
         <div>
             <strong>${name}</strong>
-            <img src="${img}" />
+            <img src="${img}" alt="${name}" />
         </div>
         `
     }
