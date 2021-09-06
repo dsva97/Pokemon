@@ -4,6 +4,7 @@ const promisePokemones =
     fetch(URL)
         .then(res=>res.json())
         .then(res=>res.results)
+        .catch(err=>console.error(err) || [])
 //#endregion DATA
 
 
@@ -15,14 +16,26 @@ const content = document.getElementById('content')
 
 //#region Utils
 const fetchPokeImg = pokeUrl => 
-    fetch(pokeUrl).then(res=>res.json())
+    fetch(pokeUrl)
+        .then(res=>res.json())
         .then(res=>res.sprites.front_default)
+        .catch(err=>console.error(err) || null)
 
+const printPokemon = ({ name, img }) => {
+    if(name && img) {
+        content.innerHTML += /*html*/`
+        <div>
+            <strong>${pokemon.name}</strong>
+            <img src="${pokemon.img}" />
+        </div>
+        `
+    }
+}
 //#endregion Utils
 
 
 //#region Main
-input.addEventListener('input', async e => {
+const handlerChange = async e => {
     content.innerHTML = ''
     const search = e.target.value
     if(search) {
@@ -32,13 +45,9 @@ input.addEventListener('input', async e => {
             if(!pokemon.img) {
                 pokemon.img = await fetchPokeImg(pokemon.url)
             }
-            content.innerHTML += /*html*/`
-            <div>
-                <strong>${pokemon.name}</strong>
-                <img src="${pokemon.img}" />
-            </div>
-            `
+            printPokemon(pokemon)
         })
     }
-})
+}
+input.addEventListener('input', handlerChange)
 //#endregion Main
