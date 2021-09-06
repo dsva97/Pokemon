@@ -25,8 +25,8 @@ const printPokemon = ({ name, img }) => {
     if(name && img) {
         content.innerHTML += /*html*/`
         <div>
-            <strong>${pokemon.name}</strong>
-            <img src="${pokemon.img}" />
+            <strong>${name}</strong>
+            <img src="${img}" />
         </div>
         `
     }
