@@ -1,10 +1,9 @@
 //#region DATA
 const URL = 'https://pokeapi.co/api/v2/pokemon/'
-let data = []
 const promisePokemones = 
     fetch(URL)
         .then(res=>res.json())
-        .then(res=>data=res.results)
+        .then(res=>res.results)
 //#endregion DATA
 
 
@@ -19,13 +18,6 @@ const fetchPokeImg = pokeUrl =>
     fetch(pokeUrl).then(res=>res.json())
         .then(res=>res.sprites.front_default)
 
-const getPokeImg = async pokeUrl => {
-    const pokemon = data.find(({url})=>url===pokeUrl)
-    if(!pokemon.img) {
-        pokemon.img = await fetchPokeImg(pokeUrl)
-    }
-    return pokemon.img
-}
 //#endregion Utils
 
 
@@ -34,15 +26,16 @@ input.addEventListener('input', async e => {
     content.innerHTML = ''
     const search = e.target.value
     if(search) {
-        await promisePokemones;
-        data
+        (await promisePokemones)
         .filter(({name}) => name.includes(search))
-        .forEach(async ({name, url}) => {
-            const img = await getPokeImg(url)
+        .forEach(async pokemon => {
+            if(!pokemon.img) {
+                pokemon.img = await fetchPokeImg(pokemon.url)
+            }
             content.innerHTML += /*html*/`
             <div>
-                <strong>${name}</strong>
-                <img src="${img}" />
+                <strong>${pokemon.name}</strong>
+                <img src="${pokemon.img}" />
             </div>
             `
         })
