@@ -36,7 +36,7 @@ input.addEventListener('input', async e => {
     if(search) {
         await promisePokemones;
         data
-        .filter(({name}) => name.split(search).length>1)
+        .filter(({name}) => name.includes(search))
         .forEach(async ({name, url}) => {
             const img = await getPokeImg(url)
             content.innerHTML += /*html*/`
